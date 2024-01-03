@@ -1,131 +1,81 @@
-# Demo服务实例部署文档
+# TPC-H benchmark on GPDB
 
-## 概述
+## Overview
 
-`(服务概述内容)`。
+About TPC-H
+As stated in the [TPC Benchmark™ H (TPC-H)](https://www.tpc.org/tpch/?spm=a2c63.p38356.879954.3.61ad2e2azV5uLJ)
+specification:
 
-```
-eg：
+“TPC-H is a decision support benchmark. It consists of a suite of business-oriented ad hoc queries and concurrent data
+modifications. The queries and the data populating the database have been chosen to have broad industry-wide relevance.
+This benchmark illustrates decision support systems that examine large volumes of data, execute queries with a high
+degree of complexity, and give answers to critical business questions.”
 
-Demo服务是计算巢提供的示例。
-本文向您介绍如何开通计算巢上的`Demo`服务，以及部署流程和使用说明。
-```
+For more information,
+see [TPC-H specifications](http://www.tpc.org/tpc_documents_current_versions/pdf/tpc-h_v2.17.3.pdf).
 
-## 计费说明
+This article describes how to use Compute Nest to quickly deploy the resources required for this service.
 
-`(计费说明内容)`
+### Deployment architecture:
 
-```
-eg:
+![image.png](2.png)
 
-Demo在计算巢上的费用主要涉及：
+## Billing instructions
 
-- 所选vCPU与内存规格
-- 系统盘类型及容量
-- 公网带宽
+The cost of this service in computing nest deployment mainly involves:
 
-计费方式包括：
+- AnalyticDB for PostgreSQL Instance
+- Traffic bandwidth charges
+- ECS Instance
 
-- 按量付费（小时）
-- 包年包月
+## Permissions required
 
-目前提供如下实例：
+Deploying this service instance requires accessing and creating some Alibaba Cloud resources. Therefore, your account
+needs to include permissions for the following resources.
 
-| 规格族 | vCPU与内存 | 系统盘 | 公网带宽 |
-| --- | --- | --- | --- |
-| ecs.r6.xlarge | 内存型r6，4vCPU 32GiB | ESSD云盘 200GiB PL0 | 固定带宽1Mbps |
+**Note**: You only need to add this permission when your account is a RAM account.
 
-预估费用在创建实例时可实时看到。
-如需更多规格、其他服务（如集群高可用性要求、企业级支持服务等），请联系我们 [mailto:xx@xx.com](mailto:xx@xx.com)。
+| Permission policy name          | Remarks                                                                |
+|---------------------------------|------------------------------------------------------------------------|
+| AliyunECSFullAccess             | Permission to manage cloud server service (ECS)                        |
+| AliyunVPCFullAccess             | Permission to manage private network (VPC)                             |
+| AliyunROSFullAccess             | Permission to manage Resource Orchestration Service (ROS)              |
+| AliyunGPDBFullAccess            | Permission to manage AnalyticDB for PostgreSQL (GPDB)                  |
+| AliyunComputeNestUserFullAccess | Manage user-side permissions for the ComputeNest service (ComputeNest) |
 
-```
+## Deployment process
 
-## 部署架构
+### Deployment parameter
 
-`(部署概述内容)`
+| 参数项                       | 说明                                                                                                                                                     |
+|---------------------------|--------------------------------------------------------------------------------------------------------------------------------------------------------|
+| Service Instance Name     | The name can be up to 64 characters in length, and can contain digits, letters, hyphens (-), and underscores (_). The name must start with a letter.   |
+| Region                    | The region where the service instance is deployed.                                                                                                     |
+| Instance Charge Type      | Charge type for the service instance.                                                                                                                  |
+| Instance Type             | ECS instance type                                                                                                                                      |
+| Instance Password         | Server login password, Length 8-30, must contain three(Capital letters, lowercase letters, numbers, ()`~!@#$%^&*_-+=\|{}[]:;'<>,.?/ Special symbol in) |
+| DBInstanceSpec            | The AnalyticDB for PostgreSQL instance spec                                                                                                            |
+| SegmentStorageSize        | Segment Storage Size                                                                                                                                   |
+| DB Username               | Primary account name of the database instance.                                                                                                         |
+| DB Instance Password      | DB login password, Length 8-30, must contain three(Capital letters, lowercase letters, numbers, ()!@#$%&*-+= Special symbol in)                        |
+| VSwitch Availability Zone | The availability zone of the VSwitch.                                                                                                                  |
+| VPC CIDR IPv4 Block       | The ip address range of the VPC in the CidrBlock form.                                                                                                 |
+| VSwitch CIDR Block        | Must belong to the subnet segment of VPC.                                                                                                              |
 
-## RAM账号所需权限
+### Deployment steps
 
-`(权限策略内容)`
+1. Visit [Deployment Link](https://computenest.console.aliyun.com/service/instance/create/cn-hangzhou?type=user&ServiceId=service-d3a86b7f3a814bdeb4f6)
+and fill in the deployment parameters as prompted:
+   ![image.png](1.jpg)
 
-```
-eg: 
+2. After filling in the parameters, you can see the corresponding inquiry details. After confirming the parameters,
+   click **Next: Confirm Order**. After confirming the order is completed, agree to the service agreement and click *
+   *Create Now** to enter the deployment stage.
+   ![image.png](3.jpg)
 
-Demo服务需要对ECS、VPC等资源进行访问和创建操作，若您使用RAM用户创建服务实例，需要在创建服务实例前，对使用的RAM用户的账号添加相应资源的权限。添加RAM权限的详细操作，请参见[为RAM用户授权](https://help.aliyun.com/document_detail/121945.html)。所需权限如下表所示。
+### Validation results
 
-
-| 权限策略名称 | 备注 |
-| --- | --- |
-| AliyunECSFullAccess | 管理云服务器服务（ECS）的权限 |
-
-```
-
-## 部署流程
-
-### 部署步骤
-
-`(部署步骤内容)`
-
-```
-eg:
-
-1. 单击部署链接，进入服务实例部署界面，根据界面提示，填写参数完成部署。
-2. 补充示意图。
-```
-### 部署参数说明
-
-`(部署参数说明内容)`
-
-```
-eg:
-
-您在创建服务实例的过程中，需要配置服务实例信息。下文介绍云XR实时渲染平台服务实例输入参数的详细信息。
-
-| 参数组 | 参数项 | 示例 | 说明 |
-| --- | --- | --- | --- |
-| 服务实例名称 |  | test | 实例的名称 |
-| 地域 |  | 华北2（北京） | 选中服务实例的地域，建议就近选中，以获取更好的网络延时。 |
-```
-
-### 验证结果
-
-`(验证结果内容)`
-
-```
-eg:
-
-1. 查看服务实例。服务实例创建成功后，部署时间大约需要2分钟。部署完成后，页面上可以看到对应的服务实例。 
-2. 通过服务实例访问TuGraph。进入到对应的服务实例后，可以在页面上获取到web、rpc、ssh共3种使用方式。
-```
-
-### 使用Demo
-
-`(服务使用说明内容)`
-
-```
-eg:
-
-请访问Demo官网了解如何使用：[使用文档](https://www.aliyun.com)
-```
-
-## 问题排查
-
-`(服务使用说明内容)`
-
-```
-eg:
-
-请访问[Demo的问题排查链接](https://www.aliyun.com)获取帮助。
-```
-
-## 联系我们
-
-欢迎访问Demo官网（[https://www.aliyun.com](https://www.aliyun.com)）了解更多信息。
-
-联系邮箱：[https://www.aliyun.com](mailto:https://www.aliyun.com)
-
-社区版开源地址：[https://github.com/](https://github.com/)
-
-扫码关注微信公众号，技术博客、活动通知不容错过：
-
-`(添加二维码图片)`
+After waiting for the service deployment to be successful, connect to ECS remotely and continue running TPC-H by
+referring
+to [Step 3 of the document](https://github.com/alibabacloud-howto/solution-adbpg-labs/blob/master/benchmark-tpc-h/README.md#step-3-generate-tpc-h-100gb-data-set-and-upload-to-oss).
+   ![image.png](4.jpg)
