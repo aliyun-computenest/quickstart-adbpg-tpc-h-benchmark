@@ -1,52 +1,81 @@
-# typecho 计算巢快速部署
+# TPC-H benchmark on GPDB
 
-## 概述
+## Overview
 
-Typecho基于PHP开发，支持多种数据库，是一款内核强健、扩展方便、体验友好、运行流畅的轻量级开源博客程序。更多信息，请参见[Typecho官网](https://docs.typecho.org/doku.php)。
-本文介绍如何使用计算巢快速部署Typecho。
+About TPC-H
+As stated in the [TPC Benchmark™ H (TPC-H)](https://www.tpc.org/tpch/?spm=a2c63.p38356.879954.3.61ad2e2azV5uLJ)
+specification:
 
-## 前提条件
+“TPC-H is a decision support benchmark. It consists of a suite of business-oriented ad hoc queries and concurrent data
+modifications. The queries and the data populating the database have been chosen to have broad industry-wide relevance.
+This benchmark illustrates decision support systems that examine large volumes of data, execute queries with a high
+degree of complexity, and give answers to critical business questions.”
 
-部署此服务实例，需要对部分阿里云资源进行访问和创建操作。因此您的账号需要包含如下资源的权限。
-**说明**：当您的账号是RAM账号时，才需要添加此权限。
+For more information,
+see [TPC-H specifications](http://www.tpc.org/tpc_documents_current_versions/pdf/tpc-h_v2.17.3.pdf).
 
-| 权限策略名称                          | 备注                         |
-|---------------------------------|----------------------------|
-| AliyunECSFullAccess             | 管理云服务器服务（ECS）的权限           |
-| AliyunVPCFullAccess             | 管理专有网络（VPC）的权限             |
-| AliyunROSFullAccess             | 管理资源编排服务（ROS）的权限           |
-| AliyunGPDBFullAccess             | 管理 AnalyticDB for PostgreSQL 的权限       |
-| AliyunComputeNestUserFullAccess | 管理计算巢服务（ComputeNest）的用户侧权限 |
+This article describes how to use Compute Nest to quickly deploy the resources required for this service.
 
-## 参数说明
+### Deployment architecture:
 
-| 参数组     | 参数项    | 说明                                                                        |
-|---------|--------|---------------------------------------------------------------------------|
-| 服务实例    | 服务实例名称 | 长度不超过64个字符，必须以英文字母开头，可包含数字、英文字母、短划线（-）和下划线（_）                             |
-|         | 地域     | 服务实例部署的地域                                                                 |
-| 网络配置    | 可用区    | ECS实例所在可用区                                                                |
-|         | VPC ID | 资源所在VPC                                                                   |
-|         | 交换机ID  | 资源所在交换机                                                                   |
-| ECS实例配置 | 实例类型   | ECS实例规格                                                                   | 
-|         | 付费类型   | 资源的计费类型：按两付费和包年包月                                                         |
-|         | 系统盘空间  | 系统盘大小, 取值范围：[40, 500], 单位：GB                                              |
-|         | 流量付费类型 | 按固定带宽和按使用流量                                                               |
-|         | 实例密码   | 服务器登录密码,长度8-30，必须包含三项（大写字母、小写字母、数字、 ()`~!@#$%^&*_-+={}[]:;'<>,.?/ 中的特殊符号） |
-| 数据库配置   | 数据库密码  | typecho数据库(typecho_db)账号(root)密码，由字母、数字、下划线（_）组成，长度为8~32个字符               |
+![image.png](2.png)
 
-## 部署流程
+## Billing instructions
 
-1. 访问计算巢Typecho社区版[部署链接](https://computenest.console.aliyun.com/service/instance/create/cn-hangzhou?type=user&ServiceId=service-db7c899d37c04551b61e)，按提示填写部署参数：
+The cost of this service in computing nest deployment mainly involves:
+
+- AnalyticDB for PostgreSQL Instance
+- Traffic bandwidth charges
+- ECS Instance
+
+## Permissions required
+
+Deploying this service instance requires accessing and creating some Alibaba Cloud resources. Therefore, your account
+needs to include permissions for the following resources.
+
+**Note**: You only need to add this permission when your account is a RAM account.
+
+| Permission policy name          | Remarks                                                                |
+|---------------------------------|------------------------------------------------------------------------|
+| AliyunECSFullAccess             | Permission to manage cloud server service (ECS)                        |
+| AliyunVPCFullAccess             | Permission to manage private network (VPC)                             |
+| AliyunROSFullAccess             | Permission to manage Resource Orchestration Service (ROS)              |
+| AliyunGPDBFullAccess            | Permission to manage AnalyticDB for PostgreSQL (GPDB)                  |
+| AliyunComputeNestUserFullAccess | Manage user-side permissions for the ComputeNest service (ComputeNest) |
+
+## Deployment process
+
+### Deployment parameter
+
+| 参数项                       | 说明                                                                                                                                                     |
+|---------------------------|--------------------------------------------------------------------------------------------------------------------------------------------------------|
+| Service Instance Name     | The name can be up to 64 characters in length, and can contain digits, letters, hyphens (-), and underscores (_). The name must start with a letter.   |
+| Region                    | The region where the service instance is deployed.                                                                                                     |
+| Instance Charge Type      | Charge type for the service instance.                                                                                                                  |
+| Instance Type             | ECS instance type                                                                                                                                      |
+| Instance Password         | Server login password, Length 8-30, must contain three(Capital letters, lowercase letters, numbers, ()`~!@#$%^&*_-+=\|{}[]:;'<>,.?/ Special symbol in) |
+| DBInstanceSpec            | The AnalyticDB for PostgreSQL instance spec                                                                                                            |
+| SegmentStorageSize        | Segment Storage Size                                                                                                                                   |
+| DB Username               | Primary account name of the database instance.                                                                                                         |
+| DB Instance Password      | DB login password, Length 8-30, must contain three(Capital letters, lowercase letters, numbers, ()!@#$%&*-+= Special symbol in)                        |
+| VSwitch Availability Zone | The availability zone of the VSwitch.                                                                                                                  |
+| VPC CIDR IPv4 Block       | The ip address range of the VPC in the CidrBlock form.                                                                                                 |
+| VSwitch CIDR Block        | Must belong to the subnet segment of VPC.                                                                                                              |
+
+### Deployment steps
+
+1. Visit [Deployment Link](https://computenest.console.aliyun.com/service/instance/create/cn-hangzhou?type=user&ServiceId=service-d3a86b7f3a814bdeb4f6)
+and fill in the deployment parameters as prompted:
    ![image.png](1.jpg)
 
-2. 参数填写完成后可以看到对应询价明细，确认参数后点击**下一步：确认订单**，确认订单完成后同意服务协议并点击**立即创建**进入部署阶段。
-   ![image.png](2.jpg)
-
-3. 部署成功后进入服务实例详情页，点击typechoUrl安装Typecho。
+2. After filling in the parameters, you can see the corresponding inquiry details. After confirming the parameters,
+   click **Next: Confirm Order**. After confirming the order is completed, agree to the service agreement and click *
+   *Create Now** to enter the deployment stage.
    ![image.png](3.jpg)
 
-4. 数据库用户名默认为root，数据库密码为部署时填写的数据库密码，数据库名为typecho_db。
-   ![image.png](4.jpg)
+### Validation results
 
-5. 设置用户名、密码和邮箱，至此typecho安装完成。
-  ![image.png](5.jpg)
+After waiting for the service deployment to be successful, connect to ECS remotely and continue running TPC-H by
+referring
+to [Step 3 of the document](https://github.com/alibabacloud-howto/solution-adbpg-labs/blob/master/benchmark-tpc-h/README.md#step-3-generate-tpc-h-100gb-data-set-and-upload-to-oss).
+   ![image.png](4.jpg)
