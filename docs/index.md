@@ -47,7 +47,7 @@ needs to include permissions for the following resources.
 
 ### Deployment parameter
 
-| 参数项                       | 说明                                                                                                                                                     |
+| Parameter                 | D                                                                                                                                                      |
 |---------------------------|--------------------------------------------------------------------------------------------------------------------------------------------------------|
 | Service Instance Name     | The name can be up to 64 characters in length, and can contain digits, letters, hyphens (-), and underscores (_). The name must start with a letter.   |
 | Region                    | The region where the service instance is deployed.                                                                                                     |
@@ -66,7 +66,7 @@ needs to include permissions for the following resources.
 
 1. Visit [Deployment Link](https://computenest.console.aliyun.com/service/instance/create/cn-hangzhou?type=user&ServiceId=service-d3a86b7f3a814bdeb4f6)
 and fill in the deployment parameters as prompted:
-   ![image.png](1.jpg)
+   ![image.png](2.jpg)
 
 2. After filling in the parameters, you can see the corresponding inquiry details. After confirming the parameters,
    click **Next: Confirm Order**. After confirming the order is completed, agree to the service agreement and click *
