@@ -47,20 +47,20 @@ needs to include permissions for the following resources.
 
 ### Deployment parameter
 
-| Parameter                 | Explanation                                                                                                                                            |
-|---------------------------|--------------------------------------------------------------------------------------------------------------------------------------------------------|
-| Service Instance Name     | The name can be up to 64 characters in length, and can contain digits, letters, hyphens (-), and underscores (_). The name must start with a letter.   |
-| Region                    | The region where the service instance is deployed.                                                                                                     |
-| Instance Charge Type      | Charge type for the service instance.                                                                                                                  |
-| Instance Type             | ECS instance type                                                                                                                                      |
-| Instance Password         | Server login password, Length 8-30, must contain three(Capital letters, lowercase letters, numbers, ()`~!@#$%^&*_-+=\|{}[]:;'<>,.?/ Special symbol in) |
-| DBInstanceSpec            | The AnalyticDB for PostgreSQL instance spec                                                                                                            |
-| SegmentStorageSize        | Segment Storage Size                                                                                                                                   |
-| DB Username               | Primary account name of the database instance.                                                                                                         |
-| DB Instance Password      | DB login password, Length 8-30, must contain three(Capital letters, lowercase letters, numbers, ()!@#$%&*-+= Special symbol in)                        |
-| VSwitch Availability Zone | The availability zone of the VSwitch.                                                                                                                  |
-| VPC CIDR IPv4 Block       | The ip address range of the VPC in the CidrBlock form.                                                                                                 |
-| VSwitch CIDR Block        | Must belong to the subnet segment of VPC.                                                                                                              |
+| Parameter                 | Explanation                                                                                                                                           |
+|---------------------------|-------------------------------------------------------------------------------------------------------------------------------------------------------|
+| Service Instance Name     | The name can be up to 64 characters in length, and can contain digits, letters, hyphens (-), and underscores (_). The name must start with a letter.  |
+| Region                    | The region where the service instance is deployed.                                                                                                    |
+| Instance Charge Type      | Charge type for the service instance.                                                                                                                 |
+| Instance Type             | ECS instance type                                                                                                                                     |
+| Instance Password         | Server login password, Length 8-30, must contain three(Capital letters, lowercase letters, numbers, ()`~!@#$%^&*_-+=\{}[]:;'<>,.?/ Special symbol in) |
+| DBInstanceSpec            | The AnalyticDB for PostgreSQL instance spec                                                                                                           |
+| SegmentStorageSize        | Segment Storage Size                                                                                                                                  |
+| DB Username               | Primary account name of the database instance.                                                                                                        |
+| DB Instance Password      | DB login password, Length 8-30, must contain three(Capital letters, lowercase letters, numbers, ()!@#$%&*-+= Special symbol in)                       |
+| VSwitch Availability Zone | The availability zone of the VSwitch.                                                                                                                 |
+| VPC CIDR IPv4 Block       | The ip address range of the VPC in the CidrBlock form.                                                                                                |
+| VSwitch CIDR Block        | Must belong to the subnet segment of VPC.                                                                                                             |
 
 ### Deployment steps
 
